@@ -9,6 +9,10 @@ for root, dirs, files in os.walk(filepath, topdown=True):
         folder_name = dir.split('.', 1)[0]
         original_path = os.path.join(f"{root}{dir}", 'mbox')
 
-        print(original_path)
-        shutil.copyfile(original_path, f'{newfolder}{folder_name}')
-        
+        try:
+            shutil.copyfile(original_path, f'{newfolder}{folder_name}')
+        except shutil.Error:
+            raise Error(f'Unable to copy file from directory: {foldername}')
+        except FileNotFoundError:
+            print(f"Could not find directory: \n{newfolder}")
+            break
